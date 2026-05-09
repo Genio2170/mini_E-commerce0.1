@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>ETNV - Login</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+
+<section id="auth-screen" class="screen active">
+
+  <div class="auth-topbar">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+      <svg id="theme-icon-auth" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;">
+
+    <div class="auth-card">
+
+      <button class="auth-back" onclick="goTo('landing')">
+        &#8592; Voltar
+      </button>
+
+      <div class="auth-logo">ETNV-ELECTRONICS</div>
+      <h2 class="auth-title">Bem-vindo</h2>
+      <p class="auth-sub">Acede à tua conta ou cria uma nova.</p>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login',this)">Login</button>
+        <button class="auth-tab" onclick="switchTab('register',this)">Registar</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="login-form">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="email@exemplo.com" id="login-email">
+        </div>
+
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" id="login-pass">
+        </div>
+<button class="auth-btn" onclick="doLogin(); window.location.href='home.html'">
+    entrar →
+</button>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="register-form" style="display:none;">
+        <div class="field">
+          <label>Nome Completo</label>
+          <input type="text" placeholder="O teu nome" id="reg-name">
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="email@exemplo.com" id="reg-email">
+        </div>
+
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="Mínimo 6 caracteres" id="reg-pass">
+        </div>
+
+          <button class="auth-btn" onclick="doRegister(); window.location.href='home.html'">
+                 Criar Conta →
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- JS SEMPRE NO FINAL -->
+<script src="../js/script.js"></script>
+
+</body>
+</html>
