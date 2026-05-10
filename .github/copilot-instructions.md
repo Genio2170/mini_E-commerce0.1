@@ -1,11 +1,12 @@
 # GitHub Copilot instructions
 
 
+
 <!-- github-copilot-toolbox:mcp-skills-awareness-begin -->
 
 ### MCP & Skills awareness (GitHub Copilot Toolbox)
 
-_Last synced: 2026-05-10T12:27:56.625Z._
+_Last synced: 2026-05-10T18:13:28.212Z._
 
 - **Full report:** `.github/copilot-toolbox-mcp-skills-awareness.md` in this workspace (auto-overwritten on each scan). Use it as ground truth for configured servers and skill folders.
 - **MCP:** For **live tools**, use **Copilot Chat → Agent** and **trust/start** the right servers in the MCP UI.
@@ -14,7 +15,7 @@ _Last synced: 2026-05-10T12:27:56.625Z._
 
 #### Workspace MCP
 
-- `c:\Users\HP\Documents\Makarenco\TIC\mini e-commerce 0.1\.vscode\mcp.json` _(workspace: mini e-commerce 0.1)_ — _file missing_
+- `c:\xampp\htdocs\mini e-commerce 0.1\.vscode\mcp.json` _(workspace: mini e-commerce 0.1)_ — _file missing_
 
 _No active workspace servers in mcp.json._
 

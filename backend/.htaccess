@@ -1,0 +1,40 @@
+# ═══════════════════════════════════════════════
+# .htaccess — Backend ETNV
+# ═══════════════════════════════════════════════
+
+# Bloquear acesso direto à pasta config e includes
+<FilesMatch "\.(php)$">
+  # Só ficheiros da pasta api/ são acessíveis externamente
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Redirecionar HTTP → HTTPS em produção (descomentar)
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Impedir listagem de diretórios
+  Options -Indexes
+</IfModule>
+
+# Bloquear acesso direto a config/ e includes/
+<IfModule mod_authz_core.c>
+  <DirectoryMatch "^.*(config|includes).*$">
+    Require all denied
+  </DirectoryMatch>
+</IfModule>
+
+# Headers de segurança
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Cache para ficheiros estáticos (se servir algum)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType application/json "access plus 0 seconds"
+</IfModule>

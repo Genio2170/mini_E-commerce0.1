@@ -1,6 +1,6 @@
 # GitHub Copilot Toolbox — MCP & Skills awareness
 
-_Generated: 2026-05-10T12:27:56.504Z_
+_Generated: 2026-05-10T18:13:28.079Z_
 
 ## How to use this report
 
@@ -15,7 +15,7 @@ _Generated: 2026-05-10T12:27:56.504Z_
 
 Workspace `mcp.json` _(folder: mini e-commerce 0.1)_
 
-- **c:\Users\HP\Documents\Makarenco\TIC\mini e-commerce 0.1\.vscode\mcp.json** — _File missing_
+- **c:\xampp\htdocs\mini e-commerce 0.1\.vscode\mcp.json** — _File missing_
 
 _No active workspace servers in mcp.json._
 
