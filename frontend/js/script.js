@@ -33,38 +33,62 @@ let cart = [];
 let user = null;
 let discount = 0;
 let currentProductFilter = 'all';
-let userAvatar = null; // base64 image
+let userAvatar = null;
 
-// ─── STORAGE (LocalStorage) ───
+// ═══════════════════════════════════════════════
+// STORAGE — LocalStorage helpers
+// ═══════════════════════════════════════════════
+
 function saveCart() {
   localStorage.setItem('etnv-cart', JSON.stringify(cart));
 }
 
 function loadCart() {
-  const saved = localStorage.getItem('etnv-cart');
-  if (saved) {
-    try {
-      cart = JSON.parse(saved);
-      updateCartBadge();
-    } catch (e) {
-      console.error('Erro ao carregar carrinho:', e);
-    }
+  try {
+    const saved = localStorage.getItem('etnv-cart');
+    if (saved) cart = JSON.parse(saved);
+  } catch(e) { console.error('Erro ao carregar carrinho:', e); }
+  updateCartBadge();
+}
+
+// FIX 1 & 3: Guardar e carregar utilizador no localStorage
+function saveUser() {
+  if (user) localStorage.setItem('etnv-user', JSON.stringify(user));
+}
+
+function loadUser() {
+  try {
+    const saved = localStorage.getItem('etnv-user');
+    if (saved) user = JSON.parse(saved);
+  } catch(e) { console.error('Erro ao carregar utilizador:', e); }
+}
+
+// FIX 4: Guardar e carregar avatar no localStorage
+function saveAvatar() {
+  if (userAvatar) {
+    localStorage.setItem('etnv-avatar', userAvatar);
+  } else {
+    localStorage.removeItem('etnv-avatar');
   }
 }
 
-// Carregar carrinho ao iniciar
-loadCart();
+function loadAvatar() {
+  userAvatar = localStorage.getItem('etnv-avatar') || null;
+}
 
-// ─── THEME ───
+// Carregar tudo ao iniciar
+loadCart();
+loadUser();
+loadAvatar();
+
+// ═══════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════
+
 function updateThemeIcons() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   const sunSVG = `<svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"/></svg>`;
   const moonSVG = `<svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
-  const icon = isDark ? sunSVG : moonSVG;
-  ['theme-icon-landing','theme-icon-auth','theme-icon-main'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.parentElement.innerHTML = el.parentElement.innerHTML;
-  });
   document.querySelectorAll('.theme-toggle').forEach(btn => btn.innerHTML = isDark ? sunSVG : moonSVG);
 }
 
@@ -76,13 +100,15 @@ function toggleTheme() {
   updateThemeIcons();
 }
 
-// Load saved theme
 (function() {
   const saved = localStorage.getItem('etnv-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
 })();
 
-// ─── NAVIGATION ───
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -106,7 +132,10 @@ function setView(view, btnEl) {
   if (view === 'profile') renderProfile();
 }
 
-// ─── AUTH ───
+// ═══════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════
+
 function switchTab(tab, btn) {
   document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -137,21 +166,23 @@ function clearAllErrors() {
   ['login-email', 'login-pass', 'reg-name', 'reg-email', 'reg-pass'].forEach(id => clearFieldError(id));
 }
 
-// Limpar erros quando usuário começa a digitar
 document.addEventListener('DOMContentLoaded', function() {
   ['login-email', 'login-pass', 'reg-name', 'reg-email', 'reg-pass'].forEach(id => {
     const input = document.getElementById(id);
-    if (input) {
-      input.addEventListener('input', function() {
-        clearFieldError(id);
-      });
-    }
+    if (input) input.addEventListener('input', () => clearFieldError(id));
   });
+
+  // FIX 3: Ao carregar a página do perfil, renderizar imediatamente
+  if (document.getElementById('profile-av')) {
+    renderProfile();
+    updateAvatarBtn();
+  }
+
+  updateThemeIcons();
 });
 
 function validateEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function validatePassword(password) {
@@ -159,94 +190,85 @@ function validatePassword(password) {
 }
 
 function doLogin() {
-    clearAllErrors();
-    
-    const email = document.getElementById("login-email").value.trim();
-    const pass = document.getElementById("login-pass").value;
+  clearAllErrors();
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  let hasError = false;
 
-    let hasError = false;
+  if (!email) {
+    showFieldError('login-email', 'Email é obrigatório'); hasError = true;
+  } else if (!validateEmail(email)) {
+    showFieldError('login-email', 'Email inválido'); hasError = true;
+  }
 
-    if (!email) {
-        showFieldError('login-email', 'Email é obrigatório');
-        hasError = true;
-    } else if (!validateEmail(email)) {
-        showFieldError('login-email', 'Email inválido');
-        hasError = true;
+  if (!pass) {
+    showFieldError('login-pass', 'Password é obrigatória'); hasError = true;
+  } else if (!validatePassword(pass)) {
+    showFieldError('login-pass', 'Password deve ter pelo menos 6 caracteres'); hasError = true;
+  }
+
+  if (!hasError) {
+    // FIX 3: Guardar utilizador no localStorage antes de mudar de página
+    // Se já existe utilizador guardado com este email, manter os seus dados
+    const savedUser = localStorage.getItem('etnv-user');
+    if (savedUser) {
+      const parsed = JSON.parse(savedUser);
+      if (parsed.email === email) {
+        user = parsed; // reutilizar dados já guardados
+      } else {
+        // email diferente — novo utilizador
+        user = { name: email.split('@')[0], email, phone: '', city: '' };
+      }
+    } else {
+      user = { name: email.split('@')[0], email, phone: '', city: '' };
     }
-
-    if (!pass) {
-        showFieldError('login-pass', 'Password é obrigatória');
-        hasError = true;
-    } else if (!validatePassword(pass)) {
-        showFieldError('login-pass', 'Password deve ter pelo menos 6 caracteres');
-        hasError = true;
-    }
-
-    if (!hasError) {
-        // login ok → vai para home
-        window.location.href = "home.html";
-    }
+    saveUser();
+    window.location.href = 'home.html';
+  }
 }
 
 function doRegister() {
   clearAllErrors();
-  
-  const name = document.getElementById('reg-name').value.trim();
+  const name  = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-pass').value;
-
+  const pass  = document.getElementById('reg-pass').value;
   let hasError = false;
 
-  if (!name) {
-    showFieldError('reg-name', 'Nome é obrigatório');
-    hasError = true;
-  }
-
-  if (!email) {
-    showFieldError('reg-email', 'Email é obrigatório');
-    hasError = true;
-  } else if (!validateEmail(email)) {
-    showFieldError('reg-email', 'Email inválido');
-    hasError = true;
-  }
-
-  if (!pass) {
-    showFieldError('reg-pass', 'Password é obrigatória');
-    hasError = true;
-  } else if (!validatePassword(pass)) {
-    showFieldError('reg-pass', 'Password deve ter pelo menos 6 caracteres');
-    hasError = true;
-  }
+  if (!name)  { showFieldError('reg-name',  'Nome é obrigatório'); hasError = true; }
+  if (!email) { showFieldError('reg-email', 'Email é obrigatório'); hasError = true; }
+  else if (!validateEmail(email)) { showFieldError('reg-email', 'Email inválido'); hasError = true; }
+  if (!pass)  { showFieldError('reg-pass',  'Password é obrigatória'); hasError = true; }
+  else if (!validatePassword(pass)) { showFieldError('reg-pass', 'Password deve ter pelo menos 6 caracteres'); hasError = true; }
 
   if (!hasError) {
+    // FIX 3: Guardar utilizador no localStorage
     user = { name, email, phone: '', city: '' };
-    window.location.href = "home.html";
+    saveUser();
+    window.location.href = 'home.html';
   }
-}
-
-function enterApp() {
-  goTo('main');
-  renderHomeGrid('all');
-  renderProfile();
-  updateAvatarBtn();
-  updateThemeIcons();
-  showToast('Bem-vindo, ' + user.name.split(' ')[0] + '!');
 }
 
 function logout() {
+  // Limpar tudo do localStorage
+  localStorage.removeItem('etnv-user');
+  localStorage.removeItem('etnv-avatar');
+  localStorage.removeItem('etnv-cart');
   user = null; cart = []; discount = 0; userAvatar = null;
   updateCartBadge();
-  alert('Fazendo logout...');
   window.location.href = 'index.html';
 }
 
-// ─── AVATAR ───
+// ═══════════════════════════════════════════════
+// AVATAR
+// ═══════════════════════════════════════════════
+
 function updateAvatarBtn() {
   const btn = document.getElementById('avatar-btn');
-  if (!btn || !user) return;
+  if (!btn) return;
+
   if (userAvatar) {
-    btn.innerHTML = `<img src="${userAvatar}" alt="avatar"/>`;
-  } else {
+    btn.innerHTML = `<img src="${userAvatar}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+  } else if (user) {
     btn.textContent = user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
   }
 }
@@ -261,6 +283,8 @@ function handleAvatarUpload(event) {
   const reader = new FileReader();
   reader.onload = function(e) {
     userAvatar = e.target.result;
+    // FIX 4: Guardar avatar no localStorage
+    saveAvatar();
     renderProfile();
     updateAvatarBtn();
     showToast('Foto de perfil atualizada!');
@@ -268,73 +292,148 @@ function handleAvatarUpload(event) {
   reader.readAsDataURL(file);
 }
 
-// ─── PROFILE ───
+// ═══════════════════════════════════════════════
+// PROFILE
+// ═══════════════════════════════════════════════
+
 function renderProfile() {
   if (!user) return;
+
   const initials = user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+
+  // FIX 4: Mostrar avatar guardado
   const avEl = document.getElementById('profile-av');
   if (avEl) {
     if (userAvatar) {
-      avEl.innerHTML = `<img src="${userAvatar}" alt="avatar"/>`;
+      avEl.innerHTML = `<img src="${userAvatar}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
     } else {
       avEl.textContent = initials;
     }
   }
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+
+  // FIX 3: Preencher todos os campos com dados do utilizador
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val || '—';
+  };
+
   set('profile-name-disp', user.name);
   set('profile-email-disp', user.email);
-  set('pi-name', user.name);
+  set('pi-name',  user.name);
   set('pi-email', user.email);
   set('pi-phone', user.phone || '—');
-  set('pi-city', user.city || '—');
+  set('pi-city',  user.city  || '—');
+
+  // Atualizar stats do carrinho
+  const psCart = document.getElementById('ps-cart');
+  if (psCart) psCart.textContent = cart.reduce((s, i) => s + i.qty, 0);
 }
 
 function toggleEditPanel() {
   const panel = document.getElementById('profile-edit-panel');
   const isOpen = panel.classList.contains('open');
+
+  // Preencher campos ao abrir
   if (!isOpen && user) {
-    document.getElementById('edit-name').value = user.name || '';
+    document.getElementById('edit-name').value  = user.name  || '';
     document.getElementById('edit-email').value = user.email || '';
     document.getElementById('edit-phone').value = user.phone || '';
-    document.getElementById('edit-city').value = user.city || '';
+    document.getElementById('edit-city').value  = user.city  || '';
+    // Limpar erros anteriores
+    clearEditErrors();
   }
   panel.classList.toggle('open');
 }
 
+// FIX 2: Validação inline no painel de edição (sem alert)
+function clearEditErrors() {
+  ['edit-name', 'edit-email'].forEach(id => {
+    const input = document.getElementById(id);
+    const errEl = document.getElementById(id + '-error');
+    if (input) input.style.borderColor = '';
+    if (errEl) errEl.remove();
+  });
+}
+
+function showEditError(inputId, message) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.style.borderColor = 'var(--red)';
+  input.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.12)';
+
+  // Remover erro anterior se existir
+  const prev = document.getElementById(inputId + '-error');
+  if (prev) prev.remove();
+
+  const err = document.createElement('div');
+  err.id = inputId + '-error';
+  err.style.cssText = 'color:var(--red);font-size:0.72rem;margin-top:3px;font-weight:500;';
+  err.textContent = message;
+  input.parentNode.appendChild(err);
+  input.focus();
+}
+
+function clearEditError(inputId) {
+  const input = document.getElementById(inputId);
+  if (input) {
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
+  }
+  const err = document.getElementById(inputId + '-error');
+  if (err) err.remove();
+}
+
+// Limpar erro ao digitar nos campos de edição
+document.addEventListener('DOMContentLoaded', function() {
+  ['edit-name', 'edit-email', 'edit-phone', 'edit-city'].forEach(id => {
+    const input = document.getElementById(id);
+    if (input) input.addEventListener('input', () => clearEditError(id));
+  });
+});
+
 function saveProfile() {
   if (!user) return;
-  const name = document.getElementById('edit-name').value.trim();
+
+  const name  = document.getElementById('edit-name').value.trim();
   const email = document.getElementById('edit-email').value.trim();
   const phone = document.getElementById('edit-phone').value.trim();
-  const city = document.getElementById('edit-city').value.trim();
+  const city  = document.getElementById('edit-city').value.trim();
 
-  // Validar campos obrigatórios
+  // FIX 2: Validação inline (sem alert)
+  let hasError = false;
+  clearEditErrors();
+
   if (!name) {
-    alert('Nome é obrigatório');
-    return;
+    showEditError('edit-name', 'Nome é obrigatório');
+    hasError = true;
   }
   if (!email) {
-    alert('Email é obrigatório');
-    return;
-  }
-  if (!validateEmail(email)) {
-    alert('Email inválido');
-    return;
+    showEditError('edit-email', 'Email é obrigatório');
+    hasError = true;
+  } else if (!validateEmail(email)) {
+    showEditError('edit-email', 'Email inválido');
+    hasError = true;
   }
 
-  // Salvar dados (campos opcionais podem estar vazios)
-  user.name = name;
+  if (hasError) return;
+
+  // FIX 1: Guardar dados no localStorage
+  user.name  = name;
   user.email = email;
   user.phone = phone;
-  user.city = city;
+  user.city  = city;
+  saveUser(); // ← persiste entre páginas
 
   renderProfile();
   updateAvatarBtn();
   toggleEditPanel();
-  alert('Perfil atualizado com sucesso!');
+  showToast('Perfil atualizado com sucesso!');
 }
 
-// ─── RENDER PRODUCTS ───
+// ═══════════════════════════════════════════════
+// RENDER PRODUCTS
+// ═══════════════════════════════════════════════
+
 function createCardHTML(p, showFull = true) {
   const badgeLabel = p.badge === 'new' ? 'Novo' : 'Sale';
   return `
@@ -362,12 +461,14 @@ function createCardHTML(p, showFull = true) {
 
 function renderHomeGrid(filter) {
   const grid = document.getElementById('home-grid');
+  if (!grid) return;
   const list = filter === 'all' ? products.slice(0, 8) : products.filter(p => p.cat === filter).slice(0, 8);
   grid.innerHTML = list.map(p => createCardHTML(p)).join('');
 }
 
 function renderProducts(filter) {
   const grid = document.getElementById('products-grid');
+  if (!grid) return;
   const search = (document.getElementById('search-input')?.value || '').toLowerCase();
   let list = filter === 'all' ? products : products.filter(p => p.cat === filter);
   if (search) list = list.filter(p => p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search));
@@ -391,7 +492,10 @@ function filterCatP(cat, btn) {
   renderProducts(cat);
 }
 
-// ─── CART ───
+// ═══════════════════════════════════════════════
+// CART
+// ═══════════════════════════════════════════════
+
 function addToCart(id, btn) {
   const p = products.find(x => x.id === id);
   if (!p) return;
@@ -407,14 +511,17 @@ function addToCart(id, btn) {
 
 function updateCartBadge() {
   const total = cart.reduce((s, i) => s + i.qty, 0);
-  document.getElementById('cart-count').textContent = total;
-  document.getElementById('cart-header-count').textContent = `${total} ${total === 1 ? 'item' : 'itens'}`;
+  const countEl = document.getElementById('cart-count');
+  if (countEl) countEl.textContent = total;
+  const headerCount = document.getElementById('cart-header-count');
+  if (headerCount) headerCount.textContent = `${total} ${total === 1 ? 'item' : 'itens'}`;
   const ps = document.getElementById('ps-cart');
   if (ps) ps.textContent = total;
 }
 
 function renderCart() {
   const list = document.getElementById('cart-items-list');
+  if (!list) return;
   if (cart.length === 0) {
     list.innerHTML = `
       <div class="cart-empty">
@@ -468,52 +575,82 @@ function removeItem(id) {
 }
 
 function calcSummary() {
-  const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const ship = sub > 0 ? 3.99 : 0;
-  const disc = sub * discount;
+  const sub   = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const ship  = sub > 0 ? 3.99 : 0;
+  const disc  = sub * discount;
   const total = sub + ship - disc;
-  document.getElementById('sum-sub').textContent = `€${sub.toFixed(2)}`;
-  document.getElementById('sum-ship').textContent = `€${ship.toFixed(2)}`;
-  document.getElementById('sum-disc').textContent = disc > 0 ? `-€${disc.toFixed(2)}` : `€0.00`;
-  document.getElementById('sum-total').textContent = `€${(sub > 0 ? total : 0).toFixed(2)}`;
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('sum-sub',   `€${sub.toFixed(2)}`);
+  set('sum-ship',  `€${ship.toFixed(2)}`);
+  set('sum-disc',  disc > 0 ? `-€${disc.toFixed(2)}` : `€0.00`);
+  set('sum-total', `€${(sub > 0 ? total : 0).toFixed(2)}`);
 }
 
 function applyPromo() {
   const code = document.getElementById('promo-code').value.trim().toUpperCase();
-  if (code === 'ETNV10') { discount = 0.1; showToast('Desconto de 10% aplicado!'); calcSummary(); }
+  if (code === 'ETNV10')      { discount = 0.1; showToast('Desconto de 10% aplicado!'); calcSummary(); }
   else if (code === 'IPIL20') { discount = 0.2; showToast('Desconto de 20% aplicado!'); calcSummary(); }
-  else { showToast('Código inválido', 'error'); }
+  else                         { showToast('Código inválido', 'error'); }
 }
 
 function checkout() {
   if (cart.length === 0) { showToast('Carrinho está vazio', 'warn'); return; }
-  const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  saveCart();
+  const sub   = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const total = (sub + 3.99 - sub * discount).toFixed(2);
+
+  // Guardar contador de pedidos no utilizador
+  if (user) {
+    user.orders = (user.orders || 0) + 1;
+    saveUser();
+    const psOrders = document.getElementById('ps-orders');
+    if (psOrders) psOrders.textContent = user.orders;
+  }
+
   cart = []; discount = 0;
   updateCartBadge();
+  saveCart();
   renderCart();
   showToast(`Pedido de €${total} confirmado!`);
-  const psOrders = document.getElementById('ps-orders');
-  if (psOrders) psOrders.textContent = parseInt(psOrders.textContent || '0') + 1;
 }
 
-// ─── TOAST ───
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+
 function showToast(msg, type = 'success') {
   const existing = document.querySelector('.toast');
   if (existing) existing.remove();
   const t = document.createElement('div');
   t.className = 'toast';
   if (type === 'error') t.style.borderLeftColor = 'var(--red)';
-  if (type === 'warn') t.style.borderLeftColor = 'var(--amber)';
+  if (type === 'warn')  t.style.borderLeftColor = 'var(--amber)';
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
 
-// ─── INIT ───
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+
 updateThemeIcons();
-renderHomeGrid('all');
+
+// Renderizar grids se existirem na página atual
+if (document.getElementById('home-grid'))     renderHomeGrid('all');
+if (document.getElementById('products-grid')) renderProducts('all');
+
+// FIX 3 & 4: Se estamos na página de perfil, renderizar imediatamente
+if (document.getElementById('profile-av')) {
+  renderProfile();
+  updateAvatarBtn();
+  // Mostrar pedidos guardados
+  if (user && document.getElementById('ps-orders')) {
+    document.getElementById('ps-orders').textContent = user.orders || 0;
+  }
+}
+
+// Atualizar avatar na navbar se existir
+updateAvatarBtn();
 
 // Verificar se deve mostrar produtos automaticamente
 (function() {

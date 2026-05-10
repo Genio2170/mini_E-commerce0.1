@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt" data-theme="dark">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
   <title>ETNV - Perfil</title>
+  <script>
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');
+  </script>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-     <!-- NAVBAR -->
+
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo" onclick="window.location.href='home.html'">ETNV-ELECTRONICS</div>
     <div class="nav-links">
-     <button class="nav-link" onclick="window.location.href='home.html'">Home</button>
+      <button class="nav-link" onclick="window.location.href='home.html'">Home</button>
       <button class="nav-link" onclick="window.location.href='home.html?view=products'">Produtos</button>
-      <button class="nav-link" onclick="window.location.href='perfil.html'">
-  Perfil
-</button>
+      <button class="nav-link active" onclick="window.location.href='perfil.html'">Perfil</button>
     </div>
     <div class="nav-right">
       <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
@@ -29,140 +31,136 @@
     </div>
   </nav>
 
-<div class="profile-layout">
+  <div class="profile-layout">
 
-  <!-- PERFIL CARD -->
-  <div class="profile-card">
+    <!-- PERFIL CARD -->
+    <div class="profile-card">
 
-    <div class="profile-header">
+      <div class="profile-header">
 
-      <div class="profile-avatar-wrap" onclick="triggerAvatarUpload()">
-        <div class="profile-avatar" id="profile-av">U</div>
-
-        <div class="profile-avatar-overlay">
-          <svg viewBox="0 0 24 24">
-            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
-            <circle cx="12" cy="13" r="4"/>
-          </svg>
+        <div class="profile-avatar-wrap" onclick="triggerAvatarUpload()">
+          <div class="profile-avatar" id="profile-av">U</div>
+          <div class="profile-avatar-overlay">
+            <svg viewBox="0 0 24 24">
+              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </div>
+          <input type="file" id="avatar-file-input" accept="image/*"
+                 style="display:none;" onchange="handleAvatarUpload(event)">
         </div>
 
-        <input type="file" id="avatar-file-input" accept="image/*"
-               style="display:none;" onchange="handleAvatarUpload(event)">
+        <div class="profile-info-col">
+          <div class="profile-name" id="profile-name-disp">Utilizador</div>
+          <div class="profile-email" id="profile-email-disp">utilizador@email.com</div>
+          <div class="profile-member">Membro desde Mai 2026</div>
+          <div class="profile-actions">
+            <button class="btn-edit" onclick="toggleEditPanel()">Editar Perfil</button>
+          </div>
+        </div>
+
       </div>
 
-      <div class="profile-info-col">
-        <div class="profile-name" id="profile-name-disp">Utilizador</div>
-        <div class="profile-email" id="profile-email-disp">utilizador@email.com</div>
-        <div class="profile-member">Membro desde Mai 2026</div>
-
-        <div class="profile-actions">
-          <button class="btn-edit" onclick="toggleEditPanel()">
-            Editar Perfil
-          </button>
+      <!-- STATS -->
+      <div class="profile-stats">
+        <div class="ps-item">
+          <div class="ps-num" id="ps-orders">0</div>
+          <div class="ps-label">Pedidos</div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-num" id="ps-cart">0</div>
+          <div class="ps-label">Carrinho</div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-num">4.9</div>
+          <div class="ps-label">Avaliação</div>
         </div>
       </div>
 
     </div>
 
-    <!-- STATS -->
-    <div class="profile-stats">
-      <div class="ps-item">
-        <div class="ps-num" id="ps-orders">0</div>
-        <div class="ps-label">Pedidos</div>
+    <!-- EDITAR PERFIL -->
+    <div class="profile-edit-panel" id="profile-edit-panel">
+
+      <div class="section-subtitle">Editar Informações</div>
+
+      <div class="profile-edit-grid">
+
+        <!-- Nome -->
+        <div class="field" id="edit-name-field">
+          <label>Nome</label>
+          <input type="text" id="edit-name" placeholder="O teu nome">
+          <div class="field-error" id="edit-name-error"></div>
+        </div>
+
+        <!-- Email -->
+        <div class="field" id="edit-email-field">
+          <label>Email</label>
+          <input type="email" id="edit-email" placeholder="O teu email">
+          <div class="field-error" id="edit-email-error"></div>
+        </div>
+
+        <!-- Telefone (opcional) -->
+        <div class="field">
+          <label>Telefone <span style="color:var(--text3);font-weight:400;font-size:0.68rem;">(opcional)</span></label>
+          <input type="tel" id="edit-phone" placeholder="+244 900 000 000">
+        </div>
+
+        <!-- Cidade (opcional) -->
+        <div class="field">
+          <label>Cidade <span style="color:var(--text3);font-weight:400;font-size:0.68rem;">(opcional)</span></label>
+          <input type="text" id="edit-city" placeholder="Ex: Luanda">
+        </div>
+
       </div>
 
-      <div class="ps-item">
-        <div class="ps-num" id="ps-cart">0</div>
-        <div class="ps-label">Carrinho</div>
+      <div class="profile-edit-actions">
+        <button class="btn-primary" onclick="saveProfile()">Guardar</button>
+        <button class="btn-ghost" onclick="toggleEditPanel()">Cancelar</button>
       </div>
 
-      <div class="ps-item">
-        <div class="ps-num">4.9</div>
-        <div class="ps-label">Avaliação</div>
-      </div>
     </div>
+
+    <!-- INFO CONTA -->
+    <div class="profile-card">
+
+      <div class="section-subtitle">Informações da Conta</div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Nome</label>
+          <span id="pi-name">—</span>
+        </div>
+        <div class="info-item">
+          <label>Email</label>
+          <span id="pi-email">—</span>
+        </div>
+        <div class="info-item">
+          <label>Membro desde</label>
+          <span>Mai 2026</span>
+        </div>
+        <div class="info-item">
+          <label>Estado</label>
+          <span style="color:var(--green);font-weight:600;">Ativo</span>
+        </div>
+        <div class="info-item">
+          <label>Telefone</label>
+          <span id="pi-phone">—</span>
+        </div>
+        <div class="info-item">
+          <label>Cidade</label>
+          <span id="pi-city">—</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SAIR -->
+    <button class="btn-ghost" style="width:100%;justify-content:center;margin-top:1.5rem;padding:12px;font-weight:600;border-radius:var(--radius-sm);" onclick="logout()">Sair da Conta</button>
 
   </div>
 
-  <!-- EDITAR PERFIL -->
-  <div class="profile-edit-panel" id="profile-edit-panel">
-
-    <div class="section-subtitle">Editar Informações</div>
-
-    <div class="profile-edit-grid">
-      <div class="field">
-        <label>Nome</label>
-        <input type="text" id="edit-name">
-      </div>
-
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="edit-email">
-      </div>
-
-      <div class="field">
-        <label>Telefone</label>
-        <input type="tel" id="edit-phone">
-      </div>
-
-      <div class="field">
-        <label>Cidade</label>
-        <input type="text" id="edit-city">
-      </div>
-    </div>
-
-    <div class="profile-edit-actions">
-      <button class="btn-primary" onclick="saveProfile()">Guardar</button>
-      <button class="btn-ghost" onclick="toggleEditPanel()">Cancelar</button>
-    </div>
-
-  </div>
-
-  <!-- INFO CONTA -->
-  <div class="profile-card">
-
-    <div class="section-subtitle">Informações da Conta</div>
-
-    <div class="info-grid">
-      <div class="info-item">
-        <label>Nome</label>
-        <span id="pi-name">—</span>
-      </div>
-
-      <div class="info-item">
-        <label>Email</label>
-        <span id="pi-email">—</span>
-      </div>
-
-      <div class="info-item">
-        <label>Membro desde</label>
-        <span>Mai 2026</span>
-      </div>
-
-      <div class="info-item">
-        <label>Estado</label>
-        <span style="color:var(--green);font-weight:600;">Ativo</span>
-      </div>
-
-      <div class="info-item">
-        <label>Telefone</label>
-        <span id="pi-phone">—</span>
-      </div>
-
-      <div class="info-item">
-        <label>Cidade</label>
-        <span id="pi-city">—</span>
-      </div>
-    </div>
-
-  </div>
- 
-  <!-- SAIR -->
-  <button class="btn-ghost" style="width:100%;justify-content:center;margin-top:1.5rem;padding:12px;font-weight:600;border-radius:var(--radius-sm);" onclick="logout()">Sair da Conta</button>
-
-</div>
-
-<script src="../js/script.js"></script>
+  <script src="../js/script.js"></script>
 
 </body>
 </html>
