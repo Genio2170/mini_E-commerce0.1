@@ -81,6 +81,18 @@ loadCart();
 loadUser();
 loadAvatar();
 
+// Verificar se API está disponível e tentar sincronizar sessão
+if (typeof Auth !== 'undefined') {
+  Auth.me().then(u => {
+    user = u;
+    saveUser();
+    console.log('Sessão verificada:', u);
+  }).catch(() => {
+    // Sessão expirada ou não existe
+    console.log('Nenhuma sessão ativa');
+  });
+}
+
 // ═══════════════════════════════════════════════
 // THEME
 // ═══════════════════════════════════════════════
@@ -208,22 +220,24 @@ function doLogin() {
   }
 
   if (!hasError) {
-    // FIX 3: Guardar utilizador no localStorage antes de mudar de página
-    // Se já existe utilizador guardado com este email, manter os seus dados
-    const savedUser = localStorage.getItem('etnv-user');
-    if (savedUser) {
-      const parsed = JSON.parse(savedUser);
-      if (parsed.email === email) {
-        user = parsed; // reutilizar dados já guardados
-      } else {
-        // email diferente — novo utilizador
-        user = { name: email.split('@')[0], email, phone: '', city: '' };
-      }
+    if (typeof Auth !== 'undefined') {
+      Auth.login(email, pass)
+        .then(u => {
+          user = u;
+          saveUser();
+          window.location.href = 'home.html';
+        })
+        .catch(err => {
+          const msg = err.message || 'Erro no login.';
+          if (msg.toLowerCase().includes('email') || msg.toLowerCase().includes('password')) {
+            showFieldError('login-email', msg);
+          } else {
+            alert(msg);
+          }
+        });
     } else {
-      user = { name: email.split('@')[0], email, phone: '', city: '' };
+      alert('Erro: API não carregada. Verifique a conexão com o servidor.');
     }
-    saveUser();
-    window.location.href = 'home.html';
   }
 }
 
@@ -241,21 +255,49 @@ function doRegister() {
   else if (!validatePassword(pass)) { showFieldError('reg-pass', 'Password deve ter pelo menos 6 caracteres'); hasError = true; }
 
   if (!hasError) {
-    // FIX 3: Guardar utilizador no localStorage
-    user = { name, email, phone: '', city: '' };
-    saveUser();
-    window.location.href = 'home.html';
+    if (typeof Auth !== 'undefined') {
+      Auth.register(name, email, pass)
+        .then(u => {
+          user = u;
+          saveUser();
+          window.location.href = 'home.html';
+        })
+        .catch(err => {
+          const msg = err.message || 'Erro no registo.';
+          if (msg.toLowerCase().includes('email')) {
+            showFieldError('reg-email', msg);
+          } else if (msg.toLowerCase().includes('nome')) {
+            showFieldError('reg-name', msg);
+          } else if (msg.toLowerCase().includes('password')) {
+            showFieldError('reg-pass', msg);
+          } else {
+            alert(msg);
+          }
+        });
+    } else {
+      alert('Erro: API não carregada. Verifique a conexão com o servidor.');
+    }
   }
 }
 
 function logout() {
-  // Limpar tudo do localStorage
-  localStorage.removeItem('etnv-user');
-  localStorage.removeItem('etnv-avatar');
-  localStorage.removeItem('etnv-cart');
-  user = null; cart = []; discount = 0; userAvatar = null;
-  updateCartBadge();
-  window.location.href = 'index.html';
+  if (typeof Auth !== 'undefined') {
+    Auth.logout().catch(() => {
+      localStorage.removeItem('etnv-user');
+      localStorage.removeItem('etnv-avatar');
+      localStorage.removeItem('etnv-cart');
+      user = null; cart = []; discount = 0; userAvatar = null;
+      updateCartBadge();
+      window.location.href = 'index.html';
+    });
+  } else {
+    localStorage.removeItem('etnv-user');
+    localStorage.removeItem('etnv-avatar');
+    localStorage.removeItem('etnv-cart');
+    user = null; cart = []; discount = 0; userAvatar = null;
+    updateCartBadge();
+    window.location.href = 'index.html';
+  }
 }
 
 // ═══════════════════════════════════════════════
