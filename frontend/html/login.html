@@ -22,7 +22,7 @@
 
     <div class="auth-card">
 
-      <button class="auth-back" onclick="goTo('landing')">
+      <button class="auth-back" onclick="window.location.href='index.html'">
         &#8592; Voltar
       </button>
 
@@ -37,38 +37,43 @@
 
       <!-- LOGIN -->
       <div id="login-form">
-        <div class="field">
+        <div class="field" id="login-email-field">
           <label>Email</label>
           <input type="email" placeholder="email@exemplo.com" id="login-email">
+          <div class="field-error" id="login-email-error"></div>
         </div>
 
-        <div class="field">
+        <div class="field" id="login-pass-field">
           <label>Password</label>
           <input type="password" placeholder="••••••••" id="login-pass">
+          <div class="field-error" id="login-pass-error"></div>
         </div>
-<button class="auth-btn" onclick="doLogin(); window.location.href='home.html'">
+<button class="auth-btn" onclick="doLogin()">
     entrar →
 </button>
       </div>
 
       <!-- REGISTER -->
       <div id="register-form" style="display:none;">
-        <div class="field">
+        <div class="field" id="reg-name-field">
           <label>Nome Completo</label>
           <input type="text" placeholder="O teu nome" id="reg-name">
+          <div class="field-error" id="reg-name-error"></div>
         </div>
 
-        <div class="field">
+        <div class="field" id="reg-email-field">
           <label>Email</label>
           <input type="email" placeholder="email@exemplo.com" id="reg-email">
+          <div class="field-error" id="reg-email-error"></div>
         </div>
 
-        <div class="field">
+        <div class="field" id="reg-pass-field">
           <label>Password</label>
           <input type="password" placeholder="Mínimo 6 caracteres" id="reg-pass">
+          <div class="field-error" id="reg-pass-error"></div>
         </div>
 
-          <button class="auth-btn" onclick="doRegister(); window.location.href='home.html'">
+          <button class="auth-btn" onclick="doRegister()">
                  Criar Conta →
         </button>
       </div>

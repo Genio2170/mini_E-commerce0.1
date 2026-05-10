@@ -10,22 +10,22 @@ const catIcons = {
 
 // ─── DATA ───
 const products = [
-  { id:1,  name:'Pro X Elite ANC',     cat:'audio',      price:89.99,  old:119.99, badge:'sale', desc:'Cancelamento de ruído ativo, 40h bateria, drivers 40mm premium.' },
-  { id:2,  name:'BassCore 500',        cat:'audio',      price:59.99,  old:null,   badge:null,   desc:'Graves profundos, design over-ear confortável, Bluetooth 5.3.' },
-  { id:3,  name:'MechBoard TKL Pro',   cat:'teclado',    price:149.99, old:189.99, badge:'sale', desc:'Switches Red linear, RGB per-key, alumínio anodizado CNC.' },
-  { id:4,  name:'TypeMaster 65%',      cat:'teclado',    price:119.99, old:null,   badge:'new',  desc:'Layout compacto 65%, switches Brown táteis, hot-swap.' },
-  { id:5,  name:'Precision Air X',     cat:'mouse',      price:59.99,  old:null,   badge:null,   desc:'Sensor PixArt 3395, 26000 DPI, peso 52g, sem fio 2.4GHz.' },
-  { id:6,  name:'GlideMax Pro',        cat:'mouse',      price:79.99,  old:99.99,  badge:'sale', desc:'Sensor óptico top, 8 botões programáveis, RGB lateral.' },
-  { id:7,  name:'TurboCharge 65W',     cat:'carregador', price:34.99,  old:null,   badge:null,   desc:'GaN III compacto, USB-C + USB-A, carga rápida PD 3.0.' },
-  { id:8,  name:'PowerGaN 100W',       cat:'carregador', price:54.99,  old:69.99,  badge:'sale', desc:'3 portas simultâneas, 100W total, indicador LED inteligente.' },
-  { id:9,  name:'SpeedDrive 256GB',    cat:'storage',    price:29.99,  old:null,   badge:null,   desc:'USB 3.2 Gen 2, leitura 400MB/s, design metal compacto.' },
-  { id:10, name:'NanoSSD 1TB',         cat:'storage',    price:89.99,  old:null,   badge:'new',  desc:'M.2 NVMe externo, 1000MB/s leitura, caixa alumínio.' },
-  { id:11, name:'FusionCable Pro 2m',  cat:'cabo',       price:19.99,  old:null,   badge:null,   desc:'USB-C 240W, nylon trançado 2m, carga + dados 40Gbps.' },
-  { id:12, name:'MagLink 1m',          cat:'cabo',       price:24.99,  old:null,   badge:'new',  desc:'Magnético USB-C, conexão automática 360°, LED de carga.' },
-  { id:13, name:'SmartHub 7-in-1',     cat:'gadget',     price:49.99,  old:64.99,  badge:'sale', desc:'USB-C hub: HDMI 4K, 3x USB-A, SD card, PD 100W pass-through.' },
-  { id:14, name:'NeckBand Flow',       cat:'audio',      price:44.99,  old:null,   badge:null,   desc:'Design pescoço, IPX5 resistente, 20h bateria, voz AI.' },
-  { id:15, name:'WristTracker X3',     cat:'gadget',     price:39.99,  old:null,   badge:'new',  desc:'Monitor cardíaco, SpO2, GPS assistido, bateria 7 dias.' },
-  { id:16, name:'WebCam 4K Ultra',     cat:'gadget',     price:99.99,  old:129.99, badge:'sale', desc:'4K 30fps, autofoco AI, microfone duplo com cancelamento de ruído.' },
+  { id:1,  name:'Pro X Elite ANC',     cat:'audio',      price:89.99,  old:119.99, badge:'sale', desc:'Cancelamento de ruído ativo, 40h bateria, drivers 40mm premium.', img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop' },
+  { id:2,  name:'BassCore 500',        cat:'audio',      price:59.99,  old:null,   badge:null,   desc:'Graves profundos, design over-ear confortável, Bluetooth 5.3.', img:'https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=400&h=400&fit=crop' },
+  { id:3,  name:'MechBoard TKL Pro',   cat:'teclado',    price:149.99, old:189.99, badge:'sale', desc:'Switches Red linear, RGB per-key, alumínio anodizado CNC.', img:'https://tse3.mm.bing.net/th/id/OIP.1xG_8dC3wTP4yqC7upuX8QHaF6?rs=1&pid=ImgDetMain&o=7&rm=3' },
+  { id:4,  name:'TypeMaster 65%',      cat:'teclado',    price:119.99, old:null,   badge:'new',  desc:'Layout compacto 65%, switches Brown táteis, hot-swap.', img:'https://tse4.mm.bing.net/th/id/OIP.O9cOb8nGpboGijIwSnquYQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+  { id:5,  name:'Precision Air X',     cat:'mouse',      price:59.99,  old:null,   badge:null,   desc:'Sensor PixArt 3395, 26000 DPI, peso 52g, sem fio 2.4GHz.', img:'https://images.unsplash.com/photo-1527814050087-3793815479db?w=400&h=400&fit=crop' },
+  { id:6,  name:'GlideMax Pro',        cat:'mouse',      price:79.99,  old:99.99,  badge:'sale', desc:'Sensor óptico top, 8 botões programáveis, RGB lateral.', img:'https://unnotekno.com/wp-content/uploads/2025/10/MS6529BK-GlidePro-2.4G-BT-Mouse-9-scaled.jpg' },
+  { id:7,  name:'TurboCharge 65W',     cat:'carregador', price:34.99,  old:null,   badge:null,   desc:'GaN III compacto, USB-C + USB-A, carga rápida PD 3.0.', img:'https://i5.walmartimages.com/seo/YUEVE-65W-Quick-Charge-Mobile-Phone-Charger-Turbocharge-Devices-Device-Fast-Charging-Power-Bank-4A-Type-C-PD-5-USB-Multiport-Charger-US-UK-EU_541dcd5a-66dd-4637-b798-d277655f8ed4.8d6f9ddef6e3144d764af0e047faf448.jpeg' },
+  { id:8,  name:'PowerGaN 100W',       cat:'carregador', price:54.99,  old:69.99,  badge:'sale', desc:'3 portas simultâneas, 100W total, indicador LED inteligente.', img:'https://tse1.mm.bing.net/th/id/OIP.o2_1ZkFR8gQsVv8d8K86qgHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+  { id:9,  name:'SpeedDrive 256GB',    cat:'storage',    price:29.99,  old:null,   badge:null,   desc:'USB 3.2 Gen 2, leitura 400MB/s, design metal compacto.', img:'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&h=400&fit=crop' },
+  { id:10, name:'NanoSSD 1TB',         cat:'storage',    price:89.99,  old:null,   badge:'new',  desc:'M.2 NVMe externo, 1000MB/s leitura, caixa alumínio.', img:'https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=400&h=400&fit=crop' },
+  { id:11, name:'FusionCable Pro 2m',  cat:'cabo',       price:19.99,  old:null,   badge:null,   desc:'USB-C 240W, nylon trançado 2m, carga + dados 40Gbps.', img:'https://tse3.mm.bing.net/th/id/OIP.atk9GNeX9CUT07LM3h8UkAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+  { id:12, name:'MagLink 1m',          cat:'cabo',       price:24.99,  old:null,   badge:'new',  desc:'Magnético USB-C, conexão automática 360°, LED de carga.', img:'https://tse3.mm.bing.net/th/id/OIP.YE7ybL2pP75Tw0vdlWXPGAHaHa?w=900&h=900&rs=1&pid=ImgDetMain&o=7&rm=3' },
+  { id:13, name:'SmartHub 7-in-1',     cat:'gadget',     price:49.99,  old:64.99,  badge:'sale', desc:'USB-C hub: HDMI 4K, 3x USB-A, SD card, PD 100W pass-through.', img:'https://microless.com/cdn/products/9936c1189c0029df88630cf774249994-hi.jpg' },
+  { id:14, name:'NeckBand Flow',       cat:'audio',      price:44.99,  old:null,   badge:null,   desc:'Design pescoço, IPX5 resistente, 20h bateria, voz AI.', img:'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&h=400&fit=crop' },
+  { id:15, name:'WristTracker X3',     cat:'gadget',     price:39.99,  old:null,   badge:'new',  desc:'Monitor cardíaco, SpO2, GPS assistido, bateria 7 dias.', img:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop' },
+  { id:16, name:'WebCam 4K Ultra',     cat:'gadget',     price:99.99,  old:129.99, badge:'sale', desc:'4K 30fps, autofoco AI, microfone duplo com cancelamento de ruído.', img:'https://tse2.mm.bing.net/th/id/OIP.ZWqMZXXsAlhXS-FFgRjbrQHaHa?w=600&h=600&rs=1&pid=ImgDetMain&o=7&rm=3' },
 ];
 
 // ─── STATE ───
@@ -34,6 +34,26 @@ let user = null;
 let discount = 0;
 let currentProductFilter = 'all';
 let userAvatar = null; // base64 image
+
+// ─── STORAGE (LocalStorage) ───
+function saveCart() {
+  localStorage.setItem('etnv-cart', JSON.stringify(cart));
+}
+
+function loadCart() {
+  const saved = localStorage.getItem('etnv-cart');
+  if (saved) {
+    try {
+      cart = JSON.parse(saved);
+      updateCartBadge();
+    } catch (e) {
+      console.error('Erro ao carregar carrinho:', e);
+    }
+  }
+}
+
+// Carregar carrinho ao iniciar
+loadCart();
 
 // ─── THEME ───
 function updateThemeIcons() {
@@ -94,28 +114,114 @@ function switchTab(tab, btn) {
   document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
 }
 
+// ─── VALIDATION ───
+function showFieldError(fieldId, message) {
+  const field = document.getElementById(fieldId + '-field');
+  const error = document.getElementById(fieldId + '-error');
+  if (field && error) {
+    field.classList.add('error');
+    error.textContent = message;
+  }
+}
+
+function clearFieldError(fieldId) {
+  const field = document.getElementById(fieldId + '-field');
+  const error = document.getElementById(fieldId + '-error');
+  if (field && error) {
+    field.classList.remove('error');
+    error.textContent = '';
+  }
+}
+
+function clearAllErrors() {
+  ['login-email', 'login-pass', 'reg-name', 'reg-email', 'reg-pass'].forEach(id => clearFieldError(id));
+}
+
+// Limpar erros quando usuário começa a digitar
+document.addEventListener('DOMContentLoaded', function() {
+  ['login-email', 'login-pass', 'reg-name', 'reg-email', 'reg-pass'].forEach(id => {
+    const input = document.getElementById(id);
+    if (input) {
+      input.addEventListener('input', function() {
+        clearFieldError(id);
+      });
+    }
+  });
+});
+
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function validatePassword(password) {
+  return password.length >= 6;
+}
+
 function doLogin() {
-    // aqui validas login (exemplo simples)
+    clearAllErrors();
     
-    const email = document.getElementById("login-email").value;
+    const email = document.getElementById("login-email").value.trim();
     const pass = document.getElementById("login-pass").value;
 
-    if (email && pass) {
+    let hasError = false;
+
+    if (!email) {
+        showFieldError('login-email', 'Email é obrigatório');
+        hasError = true;
+    } else if (!validateEmail(email)) {
+        showFieldError('login-email', 'Email inválido');
+        hasError = true;
+    }
+
+    if (!pass) {
+        showFieldError('login-pass', 'Password é obrigatória');
+        hasError = true;
+    } else if (!validatePassword(pass)) {
+        showFieldError('login-pass', 'Password deve ter pelo menos 6 caracteres');
+        hasError = true;
+    }
+
+    if (!hasError) {
         // login ok → vai para home
-        window.location.href = ".html";
-    } else {
-        alert("Preenche os campos!");
+        window.location.href = "home.html";
     }
 }
 
 function doRegister() {
-  const name = document.getElementById('reg-name').value;
-  const email = document.getElementById('reg-email').value;
+  clearAllErrors();
+  
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
   const pass = document.getElementById('reg-pass').value;
-  if (!name || !email || !pass) { showToast('Preenche todos os campos', 'warn'); return; }
-  if (pass.length < 6) { showToast('Password mínimo 6 caracteres', 'warn'); return; }
-  user = { name, email, phone: '', city: '' };
-  enterApp();
+
+  let hasError = false;
+
+  if (!name) {
+    showFieldError('reg-name', 'Nome é obrigatório');
+    hasError = true;
+  }
+
+  if (!email) {
+    showFieldError('reg-email', 'Email é obrigatório');
+    hasError = true;
+  } else if (!validateEmail(email)) {
+    showFieldError('reg-email', 'Email inválido');
+    hasError = true;
+  }
+
+  if (!pass) {
+    showFieldError('reg-pass', 'Password é obrigatória');
+    hasError = true;
+  } else if (!validatePassword(pass)) {
+    showFieldError('reg-pass', 'Password deve ter pelo menos 6 caracteres');
+    hasError = true;
+  }
+
+  if (!hasError) {
+    user = { name, email, phone: '', city: '' };
+    window.location.href = "home.html";
+  }
 }
 
 function enterApp() {
@@ -130,7 +236,8 @@ function enterApp() {
 function logout() {
   user = null; cart = []; discount = 0; userAvatar = null;
   updateCartBadge();
-  goTo('landing');
+  alert('Fazendo logout...');
+  window.location.href = 'index.html';
 }
 
 // ─── AVATAR ───
@@ -198,26 +305,45 @@ function saveProfile() {
   if (!user) return;
   const name = document.getElementById('edit-name').value.trim();
   const email = document.getElementById('edit-email').value.trim();
-  if (!name || !email) { showToast('Nome e email são obrigatórios', 'warn'); return; }
+  const phone = document.getElementById('edit-phone').value.trim();
+  const city = document.getElementById('edit-city').value.trim();
+
+  // Validar campos obrigatórios
+  if (!name) {
+    alert('Nome é obrigatório');
+    return;
+  }
+  if (!email) {
+    alert('Email é obrigatório');
+    return;
+  }
+  if (!validateEmail(email)) {
+    alert('Email inválido');
+    return;
+  }
+
+  // Salvar dados (campos opcionais podem estar vazios)
   user.name = name;
   user.email = email;
-  user.phone = document.getElementById('edit-phone').value.trim();
-  user.city = document.getElementById('edit-city').value.trim();
+  user.phone = phone;
+  user.city = city;
+
   renderProfile();
   updateAvatarBtn();
   toggleEditPanel();
-  showToast('Perfil atualizado com sucesso!');
+  alert('Perfil atualizado com sucesso!');
 }
 
 // ─── RENDER PRODUCTS ───
 function createCardHTML(p, showFull = true) {
-  const icon = catIcons[p.cat] || catIcons.gadget;
   const badgeLabel = p.badge === 'new' ? 'Novo' : 'Sale';
   return `
     <div class="product-card" style="animation:fadeUp 0.35s ease both;animation-delay:${(Math.random()*0.12).toFixed(2)}s">
       ${p.badge ? `<span class="card-badge ${p.badge}">${badgeLabel}</span>` : ''}
       <div class="card-img">
-        <div class="card-img-inner" style="color:var(--text3);">${icon}</div>
+        <div class="card-img-inner">
+          <img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">
+        </div>
       </div>
       <div class="card-body">
         <div class="card-cat">${p.cat}</div>
@@ -272,6 +398,7 @@ function addToCart(id, btn) {
   const existing = cart.find(x => x.id === id);
   if (existing) { existing.qty++; } else { cart.push({ ...p, qty: 1 }); }
   updateCartBadge();
+  saveCart();
   btn.classList.add('added');
   btn.textContent = '✓';
   setTimeout(() => { btn.classList.remove('added'); btn.textContent = '+'; }, 1200);
@@ -329,12 +456,14 @@ function changeQty(id, delta) {
   item.qty += delta;
   if (item.qty <= 0) cart = cart.filter(x => x.id !== id);
   updateCartBadge();
+  saveCart();
   renderCart();
 }
 
 function removeItem(id) {
   cart = cart.filter(x => x.id !== id);
   updateCartBadge();
+  saveCart();
   renderCart();
 }
 
@@ -359,6 +488,7 @@ function applyPromo() {
 function checkout() {
   if (cart.length === 0) { showToast('Carrinho está vazio', 'warn'); return; }
   const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  saveCart();
   const total = (sub + 3.99 - sub * discount).toFixed(2);
   cart = []; discount = 0;
   updateCartBadge();
@@ -384,3 +514,11 @@ function showToast(msg, type = 'success') {
 // ─── INIT ───
 updateThemeIcons();
 renderHomeGrid('all');
+
+// Verificar se deve mostrar produtos automaticamente
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('view') === 'products') {
+    setView('products');
+  }
+})();

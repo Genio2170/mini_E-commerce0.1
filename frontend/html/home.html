@@ -10,7 +10,7 @@
 
   <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="nav-logo" onclick="setView('home')">ELECTRONICS</div>
+    <div class="nav-logo" onclick="window.location.href='home.html'">ETNV-ELECTRONICS</div>
     <div class="nav-links">
      <button class="nav-link" onclick="window.location.href='home.html'">Home</button>
       <button class="nav-link" onclick="setView('products',this)" id="nl-products">Produtos</button>
@@ -22,14 +22,11 @@
       <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
         <svg id="theme-icon-main" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-     <button class="cart-btn" onclick="setView('cart')">
+      <button class="cart-btn" onclick="window.location.href='carrinho.html'">
         <svg class="cart-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         Carrinho
         <span class="cart-badge" id="cart-count">0</span>
       </button>
-      <button class="nav-link" onclick="window.location.href='perfil.html'">
-  Perfil
-</button>
     </div>
   </nav>
 
@@ -56,7 +53,7 @@
               </svg>
             </div>
           </div>
-          <div class="hero-visual-label">Premium Electronics</div>
+          <div class="hero-visual-label">ETNV Premium Electronics</div>
         </div>
       </div>
     </div>
@@ -130,9 +127,9 @@
       <button class="cat-chip" onclick="filterCatP('gadget',this)">Gadgets</button>
     </div>
     <div class="products-grid" id="products-grid"></div>
+  </div>
 
-    
- 
-    <script src="../js/script.js"></script>
+  <!-- JS -->
+  <script src="../js/script.js"></script>
 </body>
 </html>
