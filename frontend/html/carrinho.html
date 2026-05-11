@@ -4,66 +4,88 @@
   <meta charset="UTF-8">
   <title>ETNV - Carrinho</title>
   <link rel="stylesheet" href="../css/style.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');</script>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="nav-logo" onclick="window.location.href='home.html'">ETNV-ELECTRONICS</div>
-    <div class="nav-links">
-      <button class="nav-link" onclick="window.location.href='home.html'">Home</button>
-      <button class="nav-link" onclick="window.location.href='home.html?view=products'">Produtos</button>
-      <button class="nav-link" onclick="window.location.href='perfil.html'">Perfil</button>
-    </div>
-    <div class="nav-right">
-      <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
-        <svg id="theme-icon-main" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-      <button class="cart-btn" onclick="window.location.href='carrinho.html'">
-        <svg class="cart-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Carrinho
-        <span class="cart-badge" id="cart-count">0</span>
-      </button>
-    </div>
-  </nav>
+<nav class="navbar">
+  <div class="nav-logo" onclick="window.location.href='home.html'">ETNV-ELECTRONICS</div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="window.location.href='home.html'" data-i18n="nav_home">Home</button>
+    <button class="nav-link" onclick="window.location.href='home.html?view=products'" data-i18n="nav_products">Produtos</button>
+    <button class="nav-link" onclick="window.location.href='perfil.html'" data-i18n="nav_profile">Perfil</button>
+  </div>
+  <div class="nav-right">
+    <button class="lang-btn" onclick="toggleLang()">EN</button>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+      <svg id="theme-icon-main" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="cart-btn" onclick="window.location.href='carrinho.html'">
+      <svg class="cart-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span data-i18n="nav_cart">Carrinho</span>
+      <span class="cart-badge" id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
 
 <!-- CART VIEW -->
 <div id="view-cart" style="display:flex;flex:1;">
   <div class="cart-layout">
     <div>
       <div class="cart-header">
-        Carrinho
+        <span data-i18n="cart_title">Carrinho</span>
         <span class="cart-count-badge" id="cart-header-count">0 itens</span>
       </div>
       <div id="cart-items-list"></div>
     </div>
     <div>
       <div class="cart-summary">
-        <div class="summary-title">Resumo do Pedido</div>
-        <div class="summary-row"><span>Subtotal</span><span id="sum-sub">€0.00</span></div>
-        <div class="summary-row"><span>Envio</span><span id="sum-ship">€0.00</span></div>
-        <div class="summary-row"><span>Desconto</span><span id="sum-disc" style="color:var(--green)">€0.00</span></div>
-        <div class="summary-row total"><span>Total</span><span id="sum-total">€0.00</span></div>
+        <div class="summary-title" data-i18n="order_summary">Resumo do Pedido</div>
+        <div class="summary-row"><span data-i18n="subtotal">Subtotal</span><span id="sum-sub">Kz 0</span></div>
+        <div class="summary-row"><span data-i18n="shipping">Envio</span><span id="sum-ship">Kz 0</span></div>
+        <div class="summary-row"><span data-i18n="discount">Desconto</span><span id="sum-disc" style="color:var(--green)">Kz 0</span></div>
+        <div class="summary-row total"><span data-i18n="total">Total</span><span id="sum-total">Kz 0</span></div>
         <div class="promo-input">
-          <input type="text" placeholder="Código promo..." id="promo-code"/>
-          <button class="promo-btn" onclick="applyPromo()">Aplicar</button>
+          <input type="text" data-i18n-attr="placeholder" data-i18n="promo_placeholder" placeholder="Código promo..." id="promo-code"/>
+          <button class="promo-btn" onclick="applyPromo()" data-i18n="btn_apply">Aplicar</button>
         </div>
-        <button class="checkout-btn" onclick="checkout()">Finalizar Compra &rarr;</button>
+
+        <!-- PAYMENT METHODS -->
+        <div class="payment-section">
+          <div class="payment-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:18px;height:18px"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <span data-i18n="payment_method_title">Método de Pagamento</span>
+          </div>
+          <p class="payment-sub" data-i18n="payment_method_sub">Escolha como pretende pagar</p>
+          <div class="payment-methods" id="payment-methods-list"></div>
+        </div>
+
+        <button class="checkout-btn" onclick="checkout()" data-i18n="btn_checkout">Finalizar Compra →</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- JS -->
+<!-- PRODUCT DETAIL MODAL (shared) -->
+<div id="product-modal" class="product-modal-overlay" onclick="closeProductModal(event)" style="display:none;">
+  <div class="product-modal" onclick="event.stopPropagation()">
+    <button class="modal-close-btn" onclick="closeProductModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-inner" id="modal-inner-content"></div>
+  </div>
+</div>
+
+<script src="../js/i18n.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/script.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     renderCart();
     updateCartBadge();
+    renderPaymentMethods();
   });
 </script>
-
 </body>
 </html>

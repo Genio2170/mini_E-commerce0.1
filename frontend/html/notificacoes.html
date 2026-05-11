@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>ETNV - Minhas Notificações</title>
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');</script>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/notificacoes.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo" onclick="window.location.href='home.html'">ETNV-ELECTRONICS</div>
+    <div class="nav-links">
+      <button class="nav-link" onclick="window.location.href='home.html'">Home</button>
+      <button class="nav-link" onclick="window.location.href='home.html?view=products'">Produtos</button>
+      <button class="nav-link" onclick="window.location.href='perfil.html'">Perfil</button>
+      <button class="nav-link active"> Notificações</button>
+    </div>
+    <div class="nav-right">
+      <button class="lang-btn" onclick="toggleLang()">EN</button>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+        <svg id="theme-icon-main" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="cart-btn" onclick="window.location.href='carrinho.html'">
+        <svg class="cart-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Carrinho
+        <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="notif-page">
+    <div class="notif-page-header">
+      <div>
+        <h1 class="notif-page-title">Minhas Notificações</h1>
+        <p class="notif-page-sub">Acompanha as atualizações dos teus pedidos em tempo real.</p>
+      </div>
+      <div class="notif-header-actions">
+        <button class="btn-ghost-sm" onclick="markAllRead()">Marcar todas como lidas</button>
+        <button class="btn-ghost-sm danger" onclick="clearAllNotifs()">Limpar todas</button>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="notif-filters">
+      <button class="notif-chip active" onclick="filterNotifs('all', this)">Todas</button>
+      <button class="notif-chip" onclick="filterNotifs('unread', this)">Não lidas</button>
+      <button class="notif-chip" onclick="filterNotifs('confirmado', this)">Confirmadas</button>
+      <button class="notif-chip" onclick="filterNotifs('preparacao', this)">Preparação</button>
+      <button class="notif-chip" onclick="filterNotifs('enviado', this)">Enviados</button>
+      <button class="notif-chip" onclick="filterNotifs('entregue', this)">Entregues</button>
+      <button class="notif-chip" onclick="filterNotifs('cancelado', this)">Cancelados</button>
+    </div>
+
+    <!-- LISTA -->
+    <div id="notifs-container" class="notifs-container">
+      <div class="notif-empty-state" id="notif-empty">
+        <div class="notif-empty-icon"><svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:currentColor;stroke-width:1.5;fill:none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div class="notif-empty-title">Sem notificações</div>
+        <div class="notif-empty-sub">Quando os teus pedidos forem atualizados, verás as notificações aqui.</div>
+        <button class="btn-primary-sm" onclick="window.location.href='home.html'">Ver Produtos</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/i18n.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/script.js"></script>
+  <script src="../js/notificacoes.js"></script>
+</body>
+</html>

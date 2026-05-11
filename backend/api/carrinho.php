@@ -18,17 +18,18 @@ startSession();
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? '';
 
-// GET — listar carrinho
+// GET sem action — listar carrinho
 if ($method === 'GET' && !$action) {
     handleListar();
 }
 
+// Rotas com action
 match ($action) {
     'adicionar' => handleAdicionar(),
     'atualizar' => handleAtualizar(),
     'remover'   => handleRemover(),
     'limpar'    => handleLimpar(),
-    default     => $action ? errorResponse("Ação '$action' não reconhecida.", 404) : handleListar(),
+    default     => $action ? errorResponse("Ação '$action' não reconhecida.", 404) : null,
 };
 
 // ─── LISTAR CARRINHO ────────────────────────────

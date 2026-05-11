@@ -3,67 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ETNV - Bem-vindo</title>
+    <title>ETNV - Electronics</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');</script>
 </head>
 <body>
-   
-        <div id="landing" class="screen active">
+<div id="landing" class="screen active">
   <div class="landing-topbar">
+    <button class="lang-btn" onclick="toggleLang()">EN</button>
     <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
       <svg id="theme-icon-landing" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
   </div>
-
   <div class="landing-grid"></div>
-
   <div class="floating-cards">
-    <div class="float-card">
-      <div class="fc-label">Em destaque</div>
-      <div class="fc-name">Pro X Elite ANC</div>
-      <div class="fc-price">€89.99</div>
-    </div>
-    <div class="float-card">
-      <div class="fc-label">Top vendas</div>
-      <div class="fc-name">MechBoard TKL Pro</div>
-      <div class="fc-price">€149.99</div>
-    </div>
-    <div class="float-card">
-      <div class="fc-label">Novo</div>
-      <div class="fc-name">NanoSSD 1TB</div>
-      <div class="fc-price">€89.99</div>
-    </div>
+    <div class="float-card"><div class="fc-label">Em destaque</div><div class="fc-name">Pro X Elite ANC</div><div class="fc-price">Kz 85.450</div></div>
+    <div class="float-card"><div class="fc-label">Top vendas</div><div class="fc-name">MechBoard TKL Pro</div><div class="fc-price">Kz 142.490</div></div>
+    <div class="float-card"><div class="fc-label">Novo</div><div class="fc-name">NanoSSD 1TB</div><div class="fc-price">Kz 85.450</div></div>
   </div>
-
   <div class="landing-content">
-    <div class="brand-badge">
-      <span class="brand-badge-dot"></span>
-      Loja Aberta — Angola
-    </div>
+    <div class="brand-badge"><span class="brand-badge-dot"></span><span data-i18n="landing_badge">Loja Aberta — Angola</span></div>
     <h1 class="landing-title">ETNV</h1>
     <div class="landing-title-sub">ELECTRONICS</div>
-    <p class="landing-sub">Equipamentos premium para quem leva a tecnologia a sério. Curado, testado, entregue em 24h.</p>
+    <p class="landing-sub" data-i18n="landing_sub">Equipamentos premium para quem leva a tecnologia a sério. Curado, testado, entregue em 24h.</p>
     <div class="landing-btns">
-      <button class="btn-primary" onclick="window.location.href='login.html'">
-  Entrar na Loja
-</button>
-
-<button class="btn-ghost" onclick="window.location.href='login.html'">
-  Criar Conta
-</button>
+      <button class="btn-primary" onclick="window.location.href='login.html'"><span data-i18n="btn_enter">Entrar na Loja</span></button>
+      <button class="btn-ghost" onclick="window.location.href='login.html'"><span data-i18n="btn_create">Criar Conta</span></button>
     </div>
     <div class="landing-stats">
-      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Produtos</div></div>
-      <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Clientes</div></div>
-      <div class="stat"><div class="stat-num">4.9</div><div class="stat-label">Avaliação</div></div>
-      <div class="stat"><div class="stat-num">24h</div><div class="stat-label">Entrega</div></div>
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label" data-i18n="stat_products">Produtos</div></div>
+      <div class="stat"><div class="stat-num">12K+</div><div class="stat-label" data-i18n="stat_clients">Clientes</div></div>
+      <div class="stat"><div class="stat-num">4.9</div><div class="stat-label" data-i18n="stat_rating">Avaliação</div></div>
+      <div class="stat"><div class="stat-num">24h</div><div class="stat-label" data-i18n="stat_delivery">Entrega</div></div>
     </div>
   </div>
 </div>
-
+<script src="../js/i18n.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/script.js"></script>
-    
 </body>
 </html>

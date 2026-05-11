@@ -31,6 +31,7 @@ if ($method !== 'GET') {
         'apagar' => handleApagar(),
         default  => errorResponse("Ação '$action' não reconhecida.", 404),
     };
+    exit; // impede de cair no handleListar() abaixo
 }
 
 // GET — leitura pública
@@ -62,6 +63,12 @@ function handleListar(): never {
     if (!empty($_GET['categoria_id'])) {
         $where[]  = 'p.categoria_id = ?';
         $params[] = (int) $_GET['categoria_id'];
+    }
+
+    // Aceitar também por nome da categoria (para compatibilidade com frontend)
+    if (!empty($_GET['categoria']) && empty($_GET['categoria_id'])) {
+        $where[]  = 'c.slug = ?';
+        $params[] = $_GET['categoria'];
     }
 
     if (!empty($_GET['search'])) {
@@ -110,7 +117,9 @@ function handleListar(): never {
     $produtos = $stmt->fetchAll();
 
     // Total sem paginação (para o frontend poder mostrar "X resultados")
-    $countSql  = "SELECT COUNT(*) FROM produtos p $whereStr";
+    $countSql  = "SELECT COUNT(*) FROM produtos p
+                  LEFT JOIN categorias c ON p.categoria_id = c.id
+                  $whereStr";
     $countStmt = $db->prepare($countSql);
     $countStmt->execute($params);
     $total = (int) $countStmt->fetchColumn();

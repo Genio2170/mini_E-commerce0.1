@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>ETNV — Painel Admin</title>
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');</script>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+
+<!-- SIDEBAR -->
+<aside class="admin-sidebar" id="admin-sidebar">
+  <div class="sidebar-logo">
+    <span class="sidebar-logo-text">ETNV ADMIN</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="sidebar-item active" onclick="adminNav('dashboard', this)">
+      <span class="sidebar-label">Dashboard</span>
+    </button>
+    <div class="sidebar-section-title">CATÁLOGO</div>
+    <button class="sidebar-item" onclick="adminNav('produtos', this)">
+      <span class="sidebar-label">Produtos</span>
+    </button>
+    <button class="sidebar-item" onclick="adminNav('add-produto', this)">
+      <span class="sidebar-label">Adicionar Produto</span>
+    </button>
+    <div class="sidebar-section-title">GESTÃO</div>
+    <button class="sidebar-item" onclick="adminNav('utilizadores', this)">
+      <span class="sidebar-label">Utilizadores</span>
+    </button>
+    <button class="sidebar-item" onclick="adminNav('pedidos', this)">
+      <span class="sidebar-label">Pedidos</span>
+      <span class="sidebar-badge" id="badge-pedidos">0</span>
+    </button>
+    <div class="sidebar-section-title">SISTEMA</div>
+    <button class="sidebar-item" onclick="adminNav('notificacoes', this)">
+      <span class="sidebar-label">Notificações</span>
+      <span class="sidebar-badge admin-notif-badge" id="badge-notifs" style="display:none">0</span>
+    </button>
+    <button class="sidebar-item" onclick="adminNav('config', this)">
+      <span class="sidebar-label">Configurações</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="sidebar-logout" onclick="adminLogout()">
+      <span>Sair</span>
+    </button>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="admin-topbar">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="topbar-title" id="topbar-title">Dashboard</div>
+  <div class="topbar-right">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+      <svg id="theme-icon-admin" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <div class="admin-user-chip">
+      <div class="admin-user-avatar" id="admin-avatar-chip">A</div>
+      <span id="admin-name-chip">Admin</span>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="admin-main">
+
+  <!-- ══════════════════════════════════
+       DASHBOARD
+  ══════════════════════════════════ -->
+  <section class="admin-section active" id="section-dashboard">
+    <div class="admin-page-header">
+      <div>
+        <div class="admin-greeting" id="admin-greeting">Bem-vindo, Admin</div>
+        <div class="admin-subgreeting">Aqui está o resumo do teu negócio hoje.</div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card" onclick="adminNav('produtos', document.querySelector('[onclick*=produtos]'))">
+        <div class="stat-icon" style="background:rgba(59,130,246,0.15);color:#3b82f6"></div>
+        <div class="stat-body">
+          <div class="stat-num" id="stat-produtos">—</div>
+          <div class="stat-label">Produtos</div>
+        </div>
+        <div class="stat-trend up">↑ Ver</div>
+      </div>
+      <div class="stat-card" onclick="adminNav('utilizadores', document.querySelector('[onclick*=utilizadores]'))">
+        <div class="stat-icon" style="background:rgba(16,185,129,0.15);color:#10b981"></div>
+        <div class="stat-body">
+          <div class="stat-num" id="stat-users">—</div>
+          <div class="stat-label">Utilizadores</div>
+        </div>
+        <div class="stat-trend up">↑ Ver</div>
+      </div>
+      <div class="stat-card" onclick="adminNav('pedidos', document.querySelector('[onclick*=pedidos]'))">
+        <div class="stat-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b"></div>
+        <div class="stat-body">
+          <div class="stat-num" id="stat-pedidos">—</div>
+          <div class="stat-label">Pedidos</div>
+        </div>
+        <div class="stat-trend up">↑ Ver</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(139,92,246,0.15);color:#8b5cf6"></div>
+        <div class="stat-body">
+          <div class="stat-num" id="stat-receita">—</div>
+          <div class="stat-label">Receita Total</div>
+        </div>
+        <div class="stat-trend up">↑ Acum.</div>
+      </div>
+    </div>
+
+    <div class="dash-bottom-grid">
+      <div class="admin-card">
+        <div class="admin-card-title">Pedidos Recentes</div>
+        <div id="dash-recent-orders" class="dash-orders-list">
+          <div class="admin-empty">A carregar...</div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title">Pedidos por Estado</div>
+        <div id="dash-estados" class="dash-estados-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       PRODUTOS
+  ══════════════════════════════════ -->
+  <section class="admin-section" id="section-produtos">
+    <div class="admin-page-header">
+      <div class="admin-page-title">Gestão de Produtos</div>
+      <button class="btn-primary" onclick="adminNav('add-produto', document.querySelector('[onclick*=add-produto]'))">+ Adicionar Produto</button>
+    </div>
+    <div class="admin-card">
+      <div class="table-search-bar">
+        <input type="text" class="admin-search" placeholder="Pesquisar produtos..." id="search-produtos" oninput="filterProdutos()">
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="tabela-produtos">
+          <thead>
+            <tr>
+              <th>Imagem</th>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Stock</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-produtos">
+            <tr><td colspan="6" class="admin-empty">A carregar...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       ADICIONAR / EDITAR PRODUTO
+  ══════════════════════════════════ -->
+  <section class="admin-section" id="section-add-produto">
+    <div class="admin-page-header">
+      <div class="admin-page-title" id="add-prod-title">Adicionar Produto</div>
+    </div>
+    <div class="admin-card" style="max-width:680px">
+      <input type="hidden" id="edit-prod-id">
+      <div class="form-grid">
+        <div class="field" id="pnome-field">
+          <label>Nome do Produto</label>
+          <input type="text" id="p-nome" placeholder="Ex: Pro X Elite ANC">
+          <div class="field-error" id="pnome-error"></div>
+        </div>
+        <div class="field" id="ppreco-field">
+          <label>Preço (€)</label>
+          <input type="number" id="p-preco" placeholder="0.00" step="0.01" min="0">
+          <div class="field-error" id="ppreco-error"></div>
+        </div>
+        <div class="field" style="grid-column:1/-1" id="pdesc-field">
+          <label>Descrição</label>
+          <textarea id="p-desc" rows="3" placeholder="Descrição detalhada do produto..."></textarea>
+          <div class="field-error" id="pdesc-error"></div>
+        </div>
+        <div class="field" id="pcat-field">
+          <label>Categoria</label>
+          <select id="p-cat">
+            <option value="">— Selecionar —</option>
+            <option value="audio">Audio</option>
+            <option value="teclado">Teclados</option>
+            <option value="mouse">Mouses</option>
+            <option value="carregador">Carregadores</option>
+            <option value="storage">Storage</option>
+            <option value="cabo">Cabos</option>
+            <option value="gadget">Gadgets</option>
+          </select>
+          <div class="field-error" id="pcat-error"></div>
+        </div>
+        <div class="field" id="pstock-field">
+          <label>Stock</label>
+          <input type="number" id="p-stock" placeholder="0" min="0">
+          <div class="field-error" id="pstock-error"></div>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>URL da Imagem</label>
+          <input type="url" id="p-img" placeholder="https://...">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <div id="img-preview-wrap" style="display:none">
+            <img id="img-preview" style="max-height:140px;border-radius:10px;border:1px solid var(--border2);object-fit:cover;margin-top:8px;">
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="saveProduto()" id="btn-save-prod">Guardar Produto</button>
+        <button class="btn-ghost" onclick="adminNav('produtos', document.querySelector('[onclick*=\"produtos\"]'))">Cancelar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       UTILIZADORES
+  ══════════════════════════════════ -->
+  <section class="admin-section" id="section-utilizadores">
+    <div class="admin-page-header">
+      <div class="admin-page-title">Gestão de Utilizadores</div>
+    </div>
+    <div class="admin-card">
+      <div class="table-search-bar">
+        <input type="text" class="admin-search" placeholder="Pesquisar utilizadores..." id="search-users" oninput="filterUsers()">
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Data Registo</th>
+              <th>Estado</th>
+              <th>Tipo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-users">
+            <tr><td colspan="6" class="admin-empty">A carregar...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       PEDIDOS
+  ══════════════════════════════════ -->
+  <section class="admin-section" id="section-pedidos">
+    <div class="admin-page-header">
+      <div class="admin-page-title">Gestão de Pedidos</div>
+    </div>
+
+    <!-- Filtros de estado -->
+    <div class="estado-filters" id="estado-filters">
+      <button class="estado-chip active" onclick="filterPedidosByEstado('all',this)">Todos</button>
+      <button class="estado-chip" onclick="filterPedidosByEstado('pendente',this)">Pendente</button>
+      <button class="estado-chip" onclick="filterPedidosByEstado('confirmado',this)">Confirmado</button>
+      <button class="estado-chip" onclick="filterPedidosByEstado('preparacao',this)">Em Preparação</button>
+      <button class="estado-chip" onclick="filterPedidosByEstado('enviado',this)">Enviado</button>
+      <button class="estado-chip" onclick="filterPedidosByEstado('entregue',this)">Entregue</button>
+      <button class="estado-chip" onclick="filterPedidosByEstado('cancelado',this)">Cancelado</button>
+    </div>
+
+    <div class="admin-card" style="margin-top:1rem">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Produtos</th>
+              <th>Total</th>
+              <th>Data</th>
+              <th>Estado</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-pedidos">
+            <tr><td colspan="7" class="admin-empty">A carregar...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       NOTIFICAÇÕES ADMIN
+  ══════════════════════════════════ -->
+  <section class="admin-section" id="section-notificacoes">
+    <div class="admin-page-header">
+      <div class="admin-page-title">Notificações do Sistema</div>
+      <button class="btn-ghost" onclick="markAllNotifsRead()">Marcar todas como lidas</button>
+    </div>
+    <div id="admin-notifs-list" class="notifs-list">
+      <div class="admin-empty">Sem notificações.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CONFIGURAÇÕES
+  ══════════════════════════════════ -->
+  <section class="admin-section" id="section-config">
+    <div class="admin-page-header">
+      <div class="admin-page-title">Configurações</div>
+    </div>
+    <div class="admin-card" style="max-width:540px">
+      <div class="section-subtitle">Tema da Interface</div>
+      <div class="config-row">
+        <span>Modo escuro / claro</span>
+        <button class="btn-ghost" onclick="toggleTheme()">Alternar Tema</button>
+      </div>
+      <div class="section-subtitle" style="margin-top:1.5rem">Conta Admin</div>
+      <div class="config-row">
+        <span id="config-admin-name">—</span>
+        <button class="btn-ghost" style="color:var(--red)" onclick="adminLogout()">Sair</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- MODAL: Detalhes do Pedido -->
+<div class="modal-overlay" id="modal-pedido" onclick="closeModal('modal-pedido')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-pedido-title">Pedido #0</div>
+      <button class="modal-close" onclick="closeModal('modal-pedido')" title="Fechar">×</button>
+    </div>
+    <div id="modal-pedido-body"></div>
+    <div class="modal-actions" id="modal-pedido-actions"></div>
+  </div>
+</div>
+
+<!-- MODAL: Confirmar exclusão -->
+<div class="modal-overlay" id="modal-confirm" onclick="closeModal('modal-confirm')">
+  <div class="modal-box small" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-confirm-title">Confirmar</div>
+      <button class="modal-close" onclick="closeModal('modal-confirm')" title="Fechar">×</button>
+    </div>
+    <p id="modal-confirm-msg" style="color:var(--text2);margin-bottom:1.5rem;line-height:1.6"></p>
+    <div style="display:flex;gap:12px">
+      <button class="btn-danger" id="modal-confirm-ok">Confirmar</button>
+      <button class="btn-ghost" onclick="closeModal('modal-confirm')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="admin-toast" class="admin-toast"></div>
+
+<script src="../js/i18n.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>

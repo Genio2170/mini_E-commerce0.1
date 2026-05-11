@@ -3,29 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>ETNV - Perfil</title>
-  <script>
-    document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');
-  </script>
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');</script>
   <link rel="stylesheet" href="../css/style.css">
 </head>
-
 <body>
 
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo" onclick="window.location.href='home.html'">ETNV-ELECTRONICS</div>
     <div class="nav-links">
-      <button class="nav-link" onclick="window.location.href='home.html'">Home</button>
-      <button class="nav-link" onclick="window.location.href='home.html?view=products'">Produtos</button>
-      <button class="nav-link active" onclick="window.location.href='perfil.html'">Perfil</button>
+      <button class="nav-link" onclick="window.location.href='home.html'" data-i18n="nav_home">Home</button>
+      <button class="nav-link" onclick="window.location.href='home.html?view=products'" data-i18n="nav_products">Produtos</button>
+      <button class="nav-link active" onclick="window.location.href='perfil.html'" data-i18n="nav_profile">Perfil</button>
+     <button class="nav-link nav-notif-btn" onclick="window.location.href='notificacoes.html'" title="Minhas Notificações">
+        <svg class="nav-notif-icon" viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;stroke-width:1.5;fill:none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="nav-notif-count" id="nav-notif-badge" style="display:none">0</span>
+      </button>
     </div>
     <div class="nav-right">
+      <button class="lang-btn" onclick="toggleLang()">EN</button>
       <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
         <svg id="theme-icon-main" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
       <button class="cart-btn" onclick="window.location.href='carrinho.html'">
         <svg class="cart-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Carrinho
+        <span data-i18n="nav_cart">Carrinho</span>
         <span class="cart-badge" id="cart-count">0</span>
       </button>
     </div>
@@ -35,133 +37,81 @@
 
     <!-- PERFIL CARD -->
     <div class="profile-card">
-
       <div class="profile-header">
-
         <div class="profile-avatar-wrap" onclick="triggerAvatarUpload()">
           <div class="profile-avatar" id="profile-av">U</div>
           <div class="profile-avatar-overlay">
-            <svg viewBox="0 0 24 24">
-              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
-              <circle cx="12" cy="13" r="4"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
           </div>
-          <input type="file" id="avatar-file-input" accept="image/*"
-                 style="display:none;" onchange="handleAvatarUpload(event)">
+          <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
         </div>
-
         <div class="profile-info-col">
           <div class="profile-name" id="profile-name-disp">Utilizador</div>
           <div class="profile-email" id="profile-email-disp">utilizador@email.com</div>
-          <div class="profile-member">Membro desde Mai 2026</div>
+          <div class="profile-member"><span data-i18n="profile_member">Membro desde</span> <span id="profile-member-date">Mai 2026</span></div>
           <div class="profile-actions">
-            <button class="btn-edit" onclick="toggleEditPanel()">Editar Perfil</button>
+            <button class="btn-edit" onclick="toggleEditPanel()" data-i18n="btn_edit">Editar Perfil</button>
           </div>
         </div>
-
       </div>
 
       <!-- STATS -->
       <div class="profile-stats">
-        <div class="ps-item">
-          <div class="ps-num" id="ps-orders">0</div>
-          <div class="ps-label">Pedidos</div>
-        </div>
-        <div class="ps-item">
-          <div class="ps-num" id="ps-cart">0</div>
-          <div class="ps-label">Carrinho</div>
-        </div>
-        <div class="ps-item">
-          <div class="ps-num">4.9</div>
-          <div class="ps-label">Avaliação</div>
-        </div>
+        <div class="ps-item"><div class="ps-num" id="ps-orders">0</div><div class="ps-label" data-i18n="ps_orders">Pedidos</div></div>
+        <div class="ps-item"><div class="ps-num" id="ps-cart">0</div><div class="ps-label" data-i18n="ps_cart">Carrinho</div></div>
+        <div class="ps-item"><div class="ps-num">4.9</div><div class="ps-label" data-i18n="ps_rating">Avaliação</div></div>
       </div>
-
     </div>
 
     <!-- EDITAR PERFIL -->
     <div class="profile-edit-panel" id="profile-edit-panel">
-
-      <div class="section-subtitle">Editar Informações</div>
-
+      <div class="section-subtitle" data-i18n="edit_title">Editar Informações</div>
       <div class="profile-edit-grid">
-
-        <!-- Nome -->
         <div class="field" id="edit-name-field">
-          <label>Nome</label>
+          <label data-i18n="label_name">Nome</label>
           <input type="text" id="edit-name" placeholder="O teu nome">
           <div class="field-error" id="edit-name-error"></div>
         </div>
-
-        <!-- Email -->
         <div class="field" id="edit-email-field">
-          <label>Email</label>
+          <label data-i18n="label_email">Email</label>
           <input type="email" id="edit-email" placeholder="O teu email">
           <div class="field-error" id="edit-email-error"></div>
         </div>
-
-        <!-- Telefone (opcional) -->
         <div class="field">
-          <label>Telefone <span style="color:var(--text3);font-weight:400;font-size:0.68rem;">(opcional)</span></label>
+          <label data-i18n="label_phone">Telefone <span style="color:var(--text3);font-weight:400;font-size:0.68rem;" data-i18n="optional">(opcional)</span></label>
           <input type="tel" id="edit-phone" placeholder="+244 900 000 000">
         </div>
-
-        <!-- Cidade (opcional) -->
         <div class="field">
-          <label>Cidade <span style="color:var(--text3);font-weight:400;font-size:0.68rem;">(opcional)</span></label>
+          <label data-i18n="label_city">Cidade <span style="color:var(--text3);font-weight:400;font-size:0.68rem;" data-i18n="optional">(opcional)</span></label>
           <input type="text" id="edit-city" placeholder="Ex: Luanda">
         </div>
-
       </div>
-
       <div class="profile-edit-actions">
-        <button class="btn-primary" onclick="saveProfile()">Guardar</button>
-        <button class="btn-ghost" onclick="toggleEditPanel()">Cancelar</button>
+        <button class="btn-primary" onclick="saveProfile()" data-i18n="btn_save">Guardar</button>
+        <button class="btn-ghost" onclick="toggleEditPanel()" data-i18n="btn_cancel">Cancelar</button>
       </div>
-
     </div>
 
     <!-- INFO CONTA -->
     <div class="profile-card">
-
-      <div class="section-subtitle">Informações da Conta</div>
-
+      <div class="section-subtitle" data-i18n="account_info">Informações da Conta</div>
       <div class="info-grid">
-        <div class="info-item">
-          <label>Nome</label>
-          <span id="pi-name">—</span>
-        </div>
-        <div class="info-item">
-          <label>Email</label>
-          <span id="pi-email">—</span>
-        </div>
-        <div class="info-item">
-          <label>Membro desde</label>
-          <span>Mai 2026</span>
-        </div>
-        <div class="info-item">
-          <label>Estado</label>
-          <span style="color:var(--green);font-weight:600;">Ativo</span>
-        </div>
-        <div class="info-item">
-          <label>Telefone</label>
-          <span id="pi-phone">—</span>
-        </div>
-        <div class="info-item">
-          <label>Cidade</label>
-          <span id="pi-city">—</span>
-        </div>
+        <div class="info-item"><label data-i18n="label_name">Nome</label><span id="pi-name">—</span></div>
+        <div class="info-item"><label data-i18n="label_email">Email</label><span id="pi-email">—</span></div>
+        <div class="info-item"><label data-i18n="info_member">Membro desde</label><span id="pi-member-date">Mai 2026</span></div>
+        <div class="info-item"><label data-i18n="info_status">Estado</label><span style="color:var(--green);font-weight:600;" data-i18n="info_active">Ativo</span></div>
+        <div class="info-item"><label data-i18n="info_phone">Telefone</label><span id="pi-phone">—</span></div>
+        <div class="info-item"><label data-i18n="info_city">Cidade</label><span id="pi-city">—</span></div>
       </div>
-
     </div>
 
     <!-- SAIR -->
-    <button class="btn-ghost" style="width:100%;justify-content:center;margin-top:1.5rem;padding:12px;font-weight:600;border-radius:var(--radius-sm);" onclick="logout()">Sair da Conta</button>
+    <button class="btn-ghost" style="width:100%;justify-content:center;margin-top:1.5rem;padding:12px;font-weight:600;border-radius:var(--radius-sm);" onclick="logout()" data-i18n="btn_logout">Sair da Conta</button>
 
   </div>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/api.js"></script>
   <script src="../js/script.js"></script>
-
 </body>
 </html>

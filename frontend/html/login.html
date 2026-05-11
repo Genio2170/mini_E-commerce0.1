@@ -4,89 +4,72 @@
     <meta charset="UTF-8">
     <title>ETNV - Login</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('etnv-theme') || 'dark');</script>
 </head>
-
 <body style="display: flex; align-items: center; justify-content: center; height: 100vh;">
 
 <section id="auth-screen" class="screen active">
-
   <div class="auth-topbar">
+    <button class="lang-btn" onclick="toggleLang()">EN</button>
     <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
-      <svg id="theme-icon-auth" viewBox="0 0 24 24">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
+      <svg id="theme-icon-auth" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
   </div>
 
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;">
-
     <div class="auth-card">
-
       <button class="auth-back" onclick="window.location.href='index.html'">
-        &#8592; Voltar
+        <span data-i18n="btn_back">← Voltar</span>
       </button>
-
       <div class="auth-logo">ETNV-ELECTRONICS</div>
-      <h2 class="auth-title">Bem-vindo</h2>
-      <p class="auth-sub">Acede à tua conta ou cria uma nova.</p>
+      <h2 class="auth-title" data-i18n="auth_welcome">Bem-vindo</h2>
+      <p class="auth-sub" data-i18n="auth_sub">Acede à tua conta ou cria uma nova.</p>
 
       <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchTab('login',this)">Login</button>
-        <button class="auth-tab" onclick="switchTab('register',this)">Registar</button>
+        <button class="auth-tab active" onclick="switchTab('login',this)" data-i18n="tab_login">Login</button>
+        <button class="auth-tab" onclick="switchTab('register',this)" data-i18n="tab_register">Registar</button>
       </div>
 
       <!-- LOGIN -->
       <div id="login-form">
         <div class="field" id="login-email-field">
-          <label>Email</label>
-          <input type="email" placeholder="email@exemplo.com" id="login-email">
+          <label data-i18n="label_email">Email</label>
+          <input type="email" data-i18n-attr="placeholder" data-i18n="placeholder_email" placeholder="email@exemplo.com" id="login-email">
           <div class="field-error" id="login-email-error"></div>
         </div>
-
         <div class="field" id="login-pass-field">
-          <label>Password</label>
-          <input type="password" placeholder="••••••••" id="login-pass">
+          <label data-i18n="label_password">Password</label>
+          <input type="password" data-i18n-attr="placeholder" data-i18n="placeholder_password" placeholder="••••••••" id="login-pass">
           <div class="field-error" id="login-pass-error"></div>
         </div>
-<button class="auth-btn" onclick="doLogin()">
-    entrar →
-</button>
+        <button class="auth-btn" onclick="doLogin()"><span data-i18n="btn_login">entrar →</span></button>
       </div>
 
       <!-- REGISTER -->
       <div id="register-form" style="display:none;">
         <div class="field" id="reg-name-field">
-          <label>Nome Completo</label>
-          <input type="text" placeholder="O teu nome" id="reg-name">
+          <label data-i18n="label_fullname">Nome Completo</label>
+          <input type="text" data-i18n-attr="placeholder" data-i18n="placeholder_name" placeholder="O teu nome" id="reg-name">
           <div class="field-error" id="reg-name-error"></div>
         </div>
-
         <div class="field" id="reg-email-field">
-          <label>Email</label>
-          <input type="email" placeholder="email@exemplo.com" id="reg-email">
+          <label data-i18n="label_email">Email</label>
+          <input type="email" data-i18n-attr="placeholder" data-i18n="placeholder_email" placeholder="email@exemplo.com" id="reg-email">
           <div class="field-error" id="reg-email-error"></div>
         </div>
-
         <div class="field" id="reg-pass-field">
-          <label>Password</label>
-          <input type="password" placeholder="Mínimo 6 caracteres" id="reg-pass">
+          <label data-i18n="label_password">Password</label>
+          <input type="password" data-i18n-attr="placeholder" data-i18n="placeholder_password_min" placeholder="Mínimo 6 caracteres" id="reg-pass">
           <div class="field-error" id="reg-pass-error"></div>
         </div>
-
-          <button class="auth-btn" onclick="doRegister()">
-                 Criar Conta →
-        </button>
+        <button class="auth-btn" onclick="doRegister()"><span data-i18n="btn_register">Criar Conta →</span></button>
       </div>
-
     </div>
-
   </div>
-
 </section>
 
-<!-- JS SEMPRE NO FINAL -->
+<script src="../js/i18n.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/script.js"></script>
-
 </body>
 </html>
